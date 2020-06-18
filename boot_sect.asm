@@ -1,20 +1,22 @@
 [org 0x7c00]
 
-mov ah, 0x0e
-mov al, "s"
-int 0x10
-mov al, "l"
-int 0x10
-mov al, "o"
-int 0x10
-mov al, "n"
-int 0x10
-mov al, "i"
-int 0x10
-mov al, "x"
-int 0x10
+mov bx, HELLO
+call print
+call println
 
-jump $
+mov bx, GOODBYE
+call print
+call println
+
+jmp $
+
+%include "boot_sect_print.asm"
+
+HELLO:
+    db 'Hello, World', 0
+
+GOODBYE:
+    db 'Goodbye', 0
 
 times 510-($-$$) db 0
 dw 0xaa55
