@@ -1,9 +1,0 @@
-#define SCREEN_VIDEO_ADDRESS 0xb8000
-#define SCREEN_INPUT_REGISTER 0x3d4
-#define SCREEN_OUTPUT_REGISTER 0x3d5
-#define SCREEN_MAX_COLS 80
-#define SCREEN_MAX_ROWS 25
-
-void screen_puts(char *text);  // Puts text and newline to screen
-void screen_putchar(char c); // Puts single character to screen
-void set_cursor_offset(int offset);
