@@ -4,8 +4,8 @@ HEADERS = $(wildcard kernel/*.h drivers/*.h)
 OBJ = ${C_SOURCES:.c=.o}
 
 # Change this if your cross-compiler is somewhere else
-CC=/home/howardp/i386-elf-cross/bin/i386-elf-gcc
-GDB=/home/howardp/i386-elf-cross/bin/i386-elf-gdb
+CC = /home/howardp/i386-elf-cross/bin/i386-elf-gcc
+GDB = /home/howardp/i386-elf-cross/bin/i386-elf-gdb
 # -g: Use debugging symbols in gcc
 CFLAGS = -g
 
