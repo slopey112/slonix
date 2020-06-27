@@ -3,6 +3,7 @@
 #define SCREEN_DATA_REGISTER 0x3d5
 #define SCREEN_MAX_COLS 80
 #define SCREEN_MAX_ROWS 25
+#define SCREEN_WHITE_BLACK 0x0f
 
 void screen_putchar(char c);
 void screen_clear();

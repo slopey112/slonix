@@ -1,7 +1,9 @@
 #include "screen.h"
 #include "ports.h"
+#include "../lib/mem.h"
 
 int get_cursor_position();
+void scroll();
 void set_cursor_position(int position);
 void write_to_video_memory(unsigned char c, unsigned char attrib, int position);
 unsigned char color_to_attr(unsigned char foreground, unsigned char background);
@@ -43,7 +45,7 @@ void screen_puts(char *string) {
  */
 void screen_clear() {
     for (int i = 0; i < SCREEN_MAX_COLS * SCREEN_MAX_ROWS; i++) {
-        write_to_video_memory(' ', 0x0f, i * 2);
+        write_to_video_memory(' ', SCREEN_WHITE_BLACK, i * 2);
     }
     set_cursor_position(0);
 }
@@ -67,12 +69,32 @@ void screen_putchar(char c) {
     position = get_cursor_position();
     if (c == '\n') {
         int row = position / (SCREEN_MAX_COLS * 2);
-        position = 2 * (row + 1) * SCREEN_MAX_COLS;
+        position = get_position(0, (row + 1));
     } else {
-        write_to_video_memory(c, 0x0f, position);
+        write_to_video_memory(c, SCREEN_WHITE_BLACK, position);
         position += 2;
     }
+    if (position >= get_position(0, SCREEN_MAX_ROWS)) {
+        scroll();
+        position = get_position(0, SCREEN_MAX_ROWS - 1);
+    }
     set_cursor_position(position);
+}
+
+void scroll() {
+    unsigned char *video_memory = (unsigned char *) SCREEN_VIDEO_MEMORY;
+
+    for (int row = 0; row < SCREEN_MAX_ROWS - 1; row++) {
+        // Copy next row to current row
+        int destination = get_position(0, row);
+        int source = get_position(0, row + 1);
+        lib_memory_copy(video_memory + source, video_memory + destination, SCREEN_MAX_COLS * 2);
+    }
+    // Clear last row
+    for (int col = 0; col < SCREEN_MAX_COLS; col++) {
+        int position = get_position(col, SCREEN_MAX_ROWS - 1);
+        write_to_video_memory(' ', SCREEN_WHITE_BLACK, position);
+    }
 }
 
 int get_cursor_position() {
@@ -103,5 +125,6 @@ unsigned char color_to_attrib(unsigned char foreground, unsigned char background
     return foreground + (background << 4);
 }
 
-
-
+int get_position(int col, int row) {
+    return ((row * SCREEN_MAX_COLS) + col) * 2;
+}
