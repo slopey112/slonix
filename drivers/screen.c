@@ -2,12 +2,20 @@
 #include "ports.h"
 #include "../lib/mem.h"
 
-int get_cursor_position();
 void scroll();
+int get_cursor_position();
+int get_position(int col, int row);
 void set_cursor_position(int position);
 void write_to_video_memory(unsigned char c, unsigned char attrib, int position);
 unsigned char color_to_attr(unsigned char foreground, unsigned char background);
 
+void screen_print(char *string) {
+    int i = 0;
+    while (string[i] != 0) {
+        screen_putchar(string[i]);
+        i++;
+    }
+}
 /*
  * NAME: screen_puts
  *
@@ -22,11 +30,7 @@ unsigned char color_to_attr(unsigned char foreground, unsigned char background);
  *
  */
 void screen_puts(char *string) {
-    int i = 0;
-    while (string[i] != 0) {
-        screen_putchar(string[i]);
-        i++;
-    }
+    screen_print(string);
     screen_putchar('\n');
 }
 

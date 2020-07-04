@@ -18,3 +18,9 @@ void lib_memory_copy(void *source, void *dest, int nbytes) {
         *(c_dest + i) = *(c_source + i);
 }
 
+void memset(void *array, unsigned char byte, int nbytes) {
+    unsigned char *c_array = (unsigned char *) array;
+    
+    for (int i = 0; i < nbytes; i++)
+        *(c_array + i) = byte;
+}

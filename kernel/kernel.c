@@ -1,10 +1,10 @@
 #include "../drivers/screen.h"
+#include "../cpu/isr.h"
+#include "../lib/string.h"
 
 void main() {
     screen_clear();
-    screen_puts("hello world!");
-    screen_puts("le stupid has not arrived!!!!");
-    for (int i = 0; i < 500; i++) {
-        screen_puts("test");
-    }
+    isr_install();
+    __asm__ __volatile__("int $2");
+    __asm__ __volatile__("int $3");
 }

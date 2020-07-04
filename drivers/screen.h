@@ -8,3 +8,4 @@
 void screen_putchar(char c);
 void screen_clear();
 void screen_puts(char *string);
+void screen_print(char *string);
